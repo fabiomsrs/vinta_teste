@@ -1,2 +1,2 @@
 # Project Django React
-Project for test propose using a boilerplate from vinta software.
+Project for test purpose using a boilerplate from vinta software.

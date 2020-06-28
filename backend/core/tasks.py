@@ -18,13 +18,14 @@ def create_commits(request, data):
         headers = {'Authorization':'token ' + access_token}  
     r = requests.get('https://api.github.com/repos/'+data.get('owner')+'/'+data.get('name')+'/commits?since='+lastMonth,headers=headers)
     object_list = []
-    for commit in r.json():
-        object_list.append(Commit(author=commit.get('commit').get('author').get('name'),
-            url=commit.get('commit').get('url'),
-            date=commit.get('commit').get('author').get('date'),
-            repo=Repo.objects.get(id=data.get('id'))))
+    if r.status_code == 200:
+        for commit in r.json():
+            object_list.append(Commit(author=commit.get('commit').get('author').get('name'),
+                url=commit.get('commit').get('url'),
+                date=commit.get('commit').get('author').get('date'),
+                repo=Repo.objects.get(id=data.get('id'))))
 
-    Commit.objects.bulk_create(object_list)
+        Commit.objects.bulk_create(object_list)
 
 # @celery_app.task(name="create_web_hook")
 # def create_web_hook(request, data):     

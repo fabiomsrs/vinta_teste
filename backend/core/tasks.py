@@ -36,14 +36,16 @@ def create_web_hook(request, data):
             "push"         
         ],
         "config": {
-            "url": request.get_host() +"/repos/" + str(data.get('id')) + '/update_commits/',
+            "url": 'https://'+request.get_host() +"/repos/" + str(data.get('id')) + '/update_commits/',
             "content_type": "json",
             "insecure_ssl": "0"
         }
     }
+    print(config)
     headers = ""
     access_token = request.session.get('access_token')
     if access_token:
         headers = {'Authorization':'token ' + access_token}
     r = requests.post('https://api.github.com/repos/'+data.get('owner')+'/'+data.get('name')+'/hooks', data=json.dumps(config),headers=headers)
-    print(r)
+    print(r.json())
+    print(r.text)

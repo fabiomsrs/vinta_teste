@@ -1,4 +1,10 @@
-const urlBase = 'http://localhost:8000'
+var urlBase = ''
+if (process.env.NODE_ENV == 'production'){    
+    urlBase = 'https://vinta-teste.herokuapp.com'
+}
+else{    
+    urlBase = 'http://localhost:8000'
+}
 
 const consumeApi = (parametro = '', method = 'GET', body) => {
     return fetch(`${urlBase}/${parametro}`, {

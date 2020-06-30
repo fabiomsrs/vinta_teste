@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework_extensions.mixins import NestedViewSetMixin
 from core.serializers import RepoSerializer, CommitSerializer
 from core.paginations import CustomPagination
-from .tasks import create_commits
+from .tasks import create_commits, create_web_hook
 import json
 import requests
 import datetime
@@ -20,7 +20,7 @@ class RepoViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     filterset_fields = ['user',]
     pagination_class = CustomPagination
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):        
         data = request.data        
         request.session['access_token'] = request.GET.get('access_token')
         repo = {}        
@@ -34,7 +34,7 @@ class RepoViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
         self.perform_create(serializer)
         
         create_commits(request, serializer.data)
-        # create_web_hook(request, serializer.data) only in production
+        create_web_hook(request, serializer.data) #only in production
 
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

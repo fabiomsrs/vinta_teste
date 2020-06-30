@@ -27,23 +27,23 @@ def create_commits(request, data):
 
         Commit.objects.bulk_create(object_list)
 
-# @celery_app.task(name="create_web_hook")
-# def create_web_hook(request, data):     
-#     config = {
-#         "name": "web",
-#         "active": True,
-#         "events": [
-#             "push"         
-#         ],
-#         "config": {
-#             "url": "http://c6daf4789ea2.ngrok.io" +"/repos/" + str(data.get('id')) + '/update_commits/',
-#             "content_type": "json",
-#             "insecure_ssl": "0"
-#         }
-#     }
-#     headers = ""
-#     access_token = request.session.get('access_token')
-#     if access_token:
-#         headers = {'Authorization':'token ' + access_token}
-#     r = requests.post('https://api.github.com/repos/'+data.get('owner')+'/'+data.get('name')+'/hooks', data=json.dumps(config),headers=headers)
-#     print(r)
+@celery_app.task(name="create_web_hook")
+def create_web_hook(request, data):     
+    config = {
+        "name": "web",
+        "active": True,
+        "events": [
+            "push"         
+        ],
+        "config": {
+            "url": request.get_host() +"/repos/" + str(data.get('id')) + '/update_commits/',
+            "content_type": "json",
+            "insecure_ssl": "0"
+        }
+    }
+    headers = ""
+    access_token = request.session.get('access_token')
+    if access_token:
+        headers = {'Authorization':'token ' + access_token}
+    r = requests.post('https://api.github.com/repos/'+data.get('owner')+'/'+data.get('name')+'/hooks', data=json.dumps(config),headers=headers)
+    print(r)

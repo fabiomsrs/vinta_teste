@@ -28,9 +28,6 @@ npm-debug.log
 /webpack-stats.json
 /jquery-webpack-stats.json
 
-#git credentials
-/frontend/js/constants/gitcredentials.js
-
 # Sass
 .sass-cache
 *.map

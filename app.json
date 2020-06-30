@@ -45,10 +45,7 @@
       "as": "DATABASE"
     },
     {
-      "plan": "heroku-redis:hobby-dev",
-      "options": {
-        "version": "3.2"
-      },
+      "plan": "heroku-redis:hobby-dev",      
       "as": "REDIS"
     },
     {

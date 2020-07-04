@@ -29,7 +29,7 @@ class Home extends Component {
                 window.localStorage.setItem("access_token",res.extra_data.access_token)           
                 this.setState({loading: false})
             }).catch(err => {
-                window.location.href = Urls['users:login']()                
+                window.location.href = Urls['users:logout']()                
             })            
         )                                          
     }

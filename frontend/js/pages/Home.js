@@ -10,6 +10,7 @@ import GithubApi from "../utils/service/GithubService"
 import LoadingIndicator from '../app/components/Loader'
 import axios from 'axios';
 import ApiService from '../utils/service/ApiService';
+import { Urls } from '../utils'
 
 class Home extends Component {
 
@@ -26,8 +27,8 @@ class Home extends Component {
                 window.localStorage.setItem('user', res.extra_data.login)
                 window.localStorage.setItem("access_token",res.extra_data.access_token)           
                 this.setState({loading: false})
-            }).catch(err => { 
-                this.props.history.push("/login")
+            }).catch(err => {
+                window.location.href = Urls['users:login']()                
             })            
         )                                          
     }

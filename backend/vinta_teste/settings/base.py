@@ -123,7 +123,7 @@ COMMIT_SHA = config("HEROKU_SLUG_COMMIT", default="")
 
 LOGIN_URL = 'users:login'
 LOGOUT_URL = 'users:logout'
-LOGIN_REDIRECT_URL = 'core:home'
+LOGIN_REDIRECT_URL = 'users:login'
 LOGOUT_REDIRECT_URL = 'users:login'
 
 SOCIAL_AUTH_GITHUB_KEY = '697942c37b2a45efe29b'

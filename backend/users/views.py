@@ -20,7 +20,11 @@ class SocialUserViewSet(viewsets.ViewSet):
             }, status=401)
     
 
-def login(request):    
-    if request.user.is_authenticated:
+def login(request):
+    try:                   
+        request.user.social
         return HttpResponseRedirect(reverse_lazy('core:home'))
+    except:
+        if request.user.is_superuser:            
+            return HttpResponseRedirect(reverse_lazy('admin:index'))
     return render(request, 'index.html')

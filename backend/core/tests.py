@@ -59,6 +59,9 @@ class RepoSerializerTestCase(TestCase):
         serializer = RepoSerializer(data=self.serializer_data)        
         
         self.assertFalse(serializer.is_valid())
+
+    def test_repo_to_representation(self):
+        self.assertEqual(str(self.repo), self.repo.name)
         
 
 class CoreViewsTestCase(TestCase):
@@ -66,19 +69,19 @@ class CoreViewsTestCase(TestCase):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
     
-    def test_get_commitviewset(self):
+    def test_get_commitviewset_forbidden(self):
         # Create an instance of a GET request.
         request = self.factory.get('/commit/')
         view = CommitViewSet.as_view({'get':'list'})(request)
-        self.assertEqual(view.status_code, 200)
+        self.assertEqual(view.status_code, 403)
 
-    def test_get_repoviewset(self):
+    def test_get_repoviewset_forbidden(self):
         # Create an instance of a GET request.
         request = self.factory.get('/repos/')
         view = RepoViewSet.as_view({'get':'list'})(request)
-        self.assertEqual(view.status_code, 200)
+        self.assertEqual(view.status_code, 403)
 
-    def test_post_repoviewset(self):
+    def test_post_repoviewset_forbidden(self):
         # Create an instance of a POST request.
         body = {
             "name" : "tcc",
@@ -90,4 +93,6 @@ class CoreViewsTestCase(TestCase):
         middleware.process_request(request)
         request.session.save()  
         view = RepoViewSet.as_view({'post':'create'})(request)        
-        self.assertEqual(view.status_code, 201)
+        self.assertEqual(view.status_code, 403)
+
+        

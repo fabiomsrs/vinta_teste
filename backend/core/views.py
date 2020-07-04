@@ -18,8 +18,11 @@ class RepoViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = RepoSerializer    
     pagination_class = CustomPagination    
 
-    def get_queryset(self):                
-        return Repo.objects.filter(user=self.request.user.social.extra_data.get("login"))         
+    def get_queryset(self):
+        try:                
+            return Repo.objects.filter(user=self.request.user.social.extra_data.get("login"))
+        except:
+            return Repo.objects.none()
 
     def create(self, request, *args, **kwargs):        
         data = request.data                

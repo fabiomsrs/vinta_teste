@@ -9,54 +9,27 @@ import RepoTable from "../app/components/RepoTable"
 import GithubApi from "../utils/service/GithubService"
 import LoadingIndicator from '../app/components/Loader'
 import axios from 'axios';
+import ApiService from '../utils/service/ApiService';
 
 class Home extends Component {
 
     constructor(props) {
-        super(props)        
-        this.checkLocalStorage = this.checkLocalStorage.bind(this)
+        super(props)             
         this.setLocalStorage = this.setLocalStorage.bind(this)
         this.state = {loading: true}
-    }
+    }    
 
-    checkLocalStorage(){
-        if((window.localStorage.getItem('access_token')=="undefined" ||
-         window.localStorage.getItem('access_token')==undefined) && 
-         window.localStorage.getItem('user')=="undefined" || 
-         window.localStorage.getItem('user')==undefined){
-            return true
-        }
-        return false
-    }
-
-    setLocalStorage(){
-        const url = this.props.location.search;
-        const params = queryString.parse(url);
-        
-        if(this.checkLocalStorage()){ 
-            trackPromise(
-                axios.post('https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',            
-                    {
-                        client_id: constants.client_id,
-                        client_secret: constants.client_secret,
-                        code: params.code
-                    },
-                    {headers : {Accept: 'application/json', 'Access-Control-Allow-Origin':'*'}},
-                ).then(res => {     
-                    if(res.data.error){
-                        this.props.history.push("/login")
-                    }
-                    window.localStorage.setItem("access_token",res.data.access_token)
-                    GithubApi.getUser().then(res => {
-                       window.localStorage.setItem('user', res.login)                       
-                       this.setState({loading: false})
-                    }) 
-                }).catch(res => console.log(res))
-                )                          
-        }
-        else{
-            this.setState({loading: false})
-        }        
+    setLocalStorage(){                
+        trackPromise(
+            ApiService.getUser().then(res=>{        
+                window.localStorage.setItem('csrf',res.extra_data.csrf)
+                window.localStorage.setItem('user', res.extra_data.login)
+                window.localStorage.setItem("access_token",res.extra_data.access_token)           
+                this.setState({loading: false})
+            }).catch(err => { 
+                this.props.history.push("/login")
+            })            
+        )                                          
     }
 
     componentDidMount() { 

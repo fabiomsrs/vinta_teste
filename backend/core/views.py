@@ -15,19 +15,19 @@ import datetime
 
 class RepoViewSet(NestedViewSetMixin, viewsets.ModelViewSet): 
     queryset = Repo.objects.all()
-    serializer_class = RepoSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user',]
-    pagination_class = CustomPagination
+    serializer_class = RepoSerializer    
+    pagination_class = CustomPagination    
+
+    def get_queryset(self):                
+        return Repo.objects.filter(user=self.request.user.social.extra_data.get("login"))         
 
     def create(self, request, *args, **kwargs):        
-        data = request.data        
-        request.session['access_token'] = request.GET.get('access_token')
+        data = request.data                
         repo = {}        
         repo['name'] = data.get('name')
         repo['owner'] = data.get('owner').get('login')
         repo['date'] = data.get('created_at')  
-        repo['user'] = request.GET.get('user')  
+        repo['user'] = request.user.social.extra_data.get("login")
             
         serializer = self.get_serializer(data=repo)
         serializer.is_valid(raise_exception=True)

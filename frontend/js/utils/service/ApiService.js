@@ -9,7 +9,7 @@ else{
 const consumeApi = (parametro = '', method = 'GET', body) => {
     return fetch(`${urlBase}/${parametro}`, {
         method,
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json' , 'X-CSRFToken': window.localStorage.getItem('csrf')},
         body
     })
         .then(res => ApiService.ErrosHandling(res))
@@ -17,8 +17,9 @@ const consumeApi = (parametro = '', method = 'GET', body) => {
 }
 
 const ApiService = {
-    listRepo: (page = 1) => consumeApi('repos/?page='+page+'&user='+window.localStorage.getItem('user')),
-    createRepo: (body) => consumeApi('repos/?access_token='+window.localStorage.getItem('access_token')+'&user='+window.localStorage.getItem('user'),'POST',JSON.stringify(body)),
+    getUser: () => consumeApi('user/'),
+    listRepo: (page = 1) => consumeApi('repos/?page='+page),
+    createRepo: (body) => consumeApi('repos/','POST',JSON.stringify(body)),
     deleteRepo: (id) => consumeApi('repos/'+id,'DELETE'),
     listCommit: (page = 1) => consumeApi('commits/?page='+page+'&repo__user='+window.localStorage.getItem('user')),
     listRepoCommits: (repo,page = 1) => consumeApi('repos/'+repo+'/commits/?page='+page+'&repo__user='+window.localStorage.getItem('user')),

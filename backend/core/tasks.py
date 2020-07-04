@@ -13,10 +13,10 @@ def create_commits(request, data):
     lastMonth = lastMonth.strftime('%Y-%m-%dT%H:%M:%SZ')  
 
     headers = ""
-    access_token = request.session.get('access_token')
+    access_token = request.user.social.extra_data.get("access_token")
     if access_token:
         headers = {'Authorization':'token ' + access_token}  
-    r = requests.get('https://api.github.com/repos/'+data.get('owner')+'/'+data.get('name')+'/commits?since='+lastMonth,headers=headers)
+    r = requests.get('https://api.github.com/repos/'+data.get('owner')+'/'+data.get('name')+'/commits?since='+lastMonth,headers=headers)    
     object_list = []
     if r.status_code == 200:
         for commit in r.json():
@@ -40,10 +40,9 @@ def create_web_hook(request, data):
             "content_type": "json",
             "insecure_ssl": "0"
         }
-    }
-    print(config)
+    }    
     headers = ""
-    access_token = request.session.get('access_token')
+    access_token = request.user.social.extra_data.get("access_token")
     if access_token:
         headers = {'Authorization':'token ' + access_token}
     r = requests.post('https://api.github.com/repos/'+data.get('owner')+'/'+data.get('name')+'/hooks', data=json.dumps(config),headers=headers)

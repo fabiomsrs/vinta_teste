@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+from social_django.models import AbstractUserSocialAuth
 from common.models import IndexedTimeStampedModel
 
 from .managers import UserManager
@@ -22,7 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     objects = UserManager()
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "email"    
 
     def get_full_name(self):
         return self.email
@@ -32,3 +32,14 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     def __str__(self):
         return self.email
+
+
+class SocialUser(AbstractUserSocialAuth):
+    user = models.OneToOneField('users.User',related_name='social',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'Social User'
+        verbose_name_plural = 'Social Users'

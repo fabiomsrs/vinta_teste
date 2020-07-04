@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import constants from '../constants/gitcredentials'
 import github from '../images/github.jpg'
+import { Urls } from '../utils'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,8 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
-    const classes = useStyles();
-
+    const classes = useStyles();    
     return (
         <Container maxWidth='xs'>
             <Card className={classes.root}>
@@ -36,7 +36,7 @@ export default function Login() {
                     title="Paella dish"
                     />
                 <CardContent>
-                <Button fullWidth={true} variant="contained" color="primary" href={"https://github.com/login/oauth/authorize?client_id="+constants.client_id+"&scope=repo&allow_signup=true"}>
+                <Button fullWidth={true} variant="contained" color="primary" href={Urls['social:begin']('github')}>
                     Sign in
                 </Button>
                 </CardContent>

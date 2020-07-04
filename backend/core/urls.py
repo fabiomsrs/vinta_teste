@@ -15,7 +15,7 @@ router.register(r'commits', views.CommitViewSet, basename='commits')
 
 
 urlpatterns = [
-    path("home/", TemplateView.as_view(template_name='index.html')),
+    path("home/", TemplateView.as_view(template_name='index.html'), name='home'),
     path("commit/", TemplateView.as_view(template_name='index.html')),
     path("repo/<int:pk>/commit/", TemplateView.as_view(template_name='index.html')),
 ]

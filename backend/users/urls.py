@@ -8,7 +8,7 @@ app_name = 'users'
 
 urlpatterns = [       
     path("login/", views.login, name='login'),
-    path('logout/', TemplateView.as_view(template_name='index.html'), name='logout'), 
+    path('logout/', views.logout_view, name='logout'), 
     path('user/', views.SocialUserViewSet.as_view({'get': 'retrieve'}), name='get_user'),
     # re_path(r'^.*', TemplateView.as_view(template_name='index.html')), 
 ]

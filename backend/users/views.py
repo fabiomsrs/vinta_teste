@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from django.contrib.auth import logout
 from django.shortcuts import render 
 from rest_framework import viewsets
 from django.urls import reverse_lazy
@@ -25,6 +26,11 @@ def login(request):
         request.user.social
         return HttpResponseRedirect(reverse_lazy('core:home'))
     except:
-        if request.user.is_superuser:            
-            return HttpResponseRedirect(reverse_lazy('admin:index'))
+        if request.user.is_superuser:
+            return HttpResponseRedirect(reverse_lazy('admin:index'))    
     return render(request, 'index.html')
+
+def logout_view(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return HttpResponseRedirect(reverse_lazy('users:login'))

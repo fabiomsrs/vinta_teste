@@ -7,18 +7,22 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import constants from '../constants/gitcredentials'
-import github from '../images/github.jpg'
+import GitHubIcon from '@material-ui/icons/GitHub';
 import { Urls } from '../utils'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(8),        
         maxWidth: 345,
     },
     media: {
         height: 0,
         paddingTop: '56.25%', // 16:9
     },    
+    icon: {        
+        width: 345,
+        height: '10em',
+    }
 }));
 
 export default function Login() {
@@ -30,11 +34,11 @@ export default function Login() {
                     title="Github Monitor"
                     style={{'textAlign':'center'}}
                     />
-                <CardMedia
-                    className={classes.media}
-                    image={github}
+                {/* <CardMedia
+                    
                     title="Paella dish"
-                    />
+                    /> */}
+                    <GitHubIcon className={classes.icon}/>
                 <CardContent>
                 <Button fullWidth={true} variant="contained" color="primary" href={Urls['social:begin']('github')}>
                     Sign in

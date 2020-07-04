@@ -1,5 +1,6 @@
 import React, { Component, Fragment} from 'react'
 import { Container } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import queryString from 'query-string';
 import { trackPromise } from 'react-promise-tracker';
 import constants from "../constants/gitcredentials"
@@ -41,7 +42,7 @@ class Home extends Component {
         return (
             <Fragment>
                 <Header />
-                <Container maxWidth="lg">                
+                <Container component={Paper} maxWidth="lg">                
                 {
                 this.state.loading ? 
                     <LoadingIndicator/>              

@@ -39,7 +39,7 @@ export default function ButtonAppBar() {
           <Link to="/commit" style={{color:'#FFF'}}>
             <Button color="inherit">Commits</Button>
           </Link>
-          <Link onClick={() => {window.localStorage.clear(), history.push('/login')}} to="#" style={{color:'#FFF'}}>
+          <Link onClick={() => {window.localStorage.clear(), history.push('/logout')}} to="#" style={{color:'#FFF'}}>
             <Button color="inherit">Logout</Button>
           </Link>
         </Toolbar>

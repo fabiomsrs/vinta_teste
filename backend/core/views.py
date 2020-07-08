@@ -1,5 +1,6 @@
 from core.models import Repo, Commit
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import AllowAny
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -18,11 +19,10 @@ class RepoViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = RepoSerializer    
     pagination_class = CustomPagination    
 
-    def get_queryset(self):
-        try:                
-            return Repo.objects.filter(user=self.request.user.social.extra_data.get("login"))
-        except:
-            return Repo.objects.none()
+    def list(self, request):
+        queryset = Repo.objects.filter(user=self.request.user.social.extra_data.get("login"))
+        serializer = RepoSerializer(queryset, many=True)        
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):        
         data = request.data                
@@ -42,10 +42,11 @@ class RepoViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
-    @action(methods=['post'], detail=True)
+    @action(methods=['post'], detail=True, permission_classes=[AllowAny])
     def update_commits(self, request, pk=None):        
         data = request.data
         repo = self.get_object()
+        print(repo)
         commits = []        
         for commit in data.get('commits'):            
             commits.append(

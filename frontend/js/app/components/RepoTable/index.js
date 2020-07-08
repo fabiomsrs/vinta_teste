@@ -42,10 +42,10 @@ class RepoTable extends Component {
 
     componentDidMount(){
         trackPromise(
-            ApiService.listRepo().then(res => {            
-                if (res.results) {
+            ApiService.listRepo().then(res => {                            
+                if (res) {
                     this.setState({
-                        repos: [...res.results]
+                        repos: [...res]
                     })                
                 }
             }).catch(err => console.log(err))
